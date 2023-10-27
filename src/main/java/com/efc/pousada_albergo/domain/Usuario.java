@@ -27,7 +27,7 @@ public class Usuario {
     @Getter
     @Email
     @NotBlank(message = "E-mail é obrigatório")
-    @Column(nullable = false, length = 80)
+    @Column(nullable = false, length = 80, unique = true)
     private String email;
 
     @Getter
