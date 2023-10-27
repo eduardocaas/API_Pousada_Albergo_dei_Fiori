@@ -13,6 +13,7 @@ import java.util.Date;
 public class Usuario {
 
     @Id
+    @Getter
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
@@ -21,6 +22,7 @@ public class Usuario {
     @Column(nullable = false, length = 100)
     private String nome;
 
+    @Getter
     @NotBlank(message = "E-mail é obrigatório")
     @Column(nullable = false, length = 80)
     private String email;
