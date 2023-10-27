@@ -1,6 +1,7 @@
 package com.efc.pousada_albergo.service;
 
 import com.efc.pousada_albergo.domain.Usuario;
+import com.efc.pousada_albergo.dto.UsuarioDTO;
 import com.efc.pousada_albergo.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -18,6 +19,13 @@ public class UsuarioService {
     public UsuarioService(UsuarioRepository usuarioRepository)
     {
         this.usuarioRepository = usuarioRepository;
+    }
+
+    public UsuarioDTO buscaPorId(Long id)
+    {
+        Usuario usuario = usuarioRepository.findById(id).orElseThrow(() ->
+                new HttpClientErrorException(HttpStatus.NOT_FOUND, "Usuário não encontrado"));
+        return new UsuarioDTO(usuario.getNome(), usuario.getEmail(), usuario.getTelefone(), usuario.getCpf());
     }
 
     public Usuario salvar(Usuario usuario)

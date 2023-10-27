@@ -1,6 +1,7 @@
 package com.efc.pousada_albergo.controller;
 
 import com.efc.pousada_albergo.domain.Usuario;
+import com.efc.pousada_albergo.dto.UsuarioDTO;
 import com.efc.pousada_albergo.service.UsuarioService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +26,19 @@ public class UsuarioController {
     @GetMapping(value = "/{id}")
     public ResponseEntity<String> buscaPorId(@PathVariable Long id)
     {
-
+        try
+        {
+            UsuarioDTO usuario = service.buscaPorId(id);
+            return ResponseEntity.ok().body(usuario.toString());
+        }
+        catch (HttpClientErrorException clientException)
+        {
+            return ResponseEntity.status(clientException.getStatusCode()).body(clientException.getMessage());
+        }
+        catch (Exception exception)
+        {
+            return ResponseEntity.internalServerError().body(exception.getMessage());
+        }
     }
 
     @PostMapping
@@ -39,6 +52,7 @@ public class UsuarioController {
         }
         catch (HttpClientErrorException clientException)
         {
+            //TODO: Testar chamada igual da buscaPorId
             return new ResponseEntity<>(clientException.getMessage(), clientException.getStatusCode());
         }
         catch (Exception exception)
