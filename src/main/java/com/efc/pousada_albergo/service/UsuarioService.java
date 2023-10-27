@@ -7,6 +7,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.HttpClientErrorException;
 
+import java.util.Optional;
+
 @Service
 public class UsuarioService {
 
@@ -21,6 +23,14 @@ public class UsuarioService {
     public Usuario salvar(Usuario usuario)
     {
         this.validarUsuario(usuario);
+
+        Optional<Usuario> usuarioOptional = buscaPorCPF(usuario.getCpf());
+        if (usuarioOptional.isPresent())
+        {
+            throw new HttpClientErrorException(HttpStatus.CONFLICT,
+                    "Usuário com CPF: " + usuario.getCpf() + " já existente");
+        }
+
         return usuarioRepository.save(usuario);
     }
 
@@ -45,9 +55,9 @@ public class UsuarioService {
         }
     }
 
-    private void buscaPorCPF(String cpf)
+    private Optional<Usuario> buscaPorCPF(String cpf)
     {
-
+        return usuarioRepository.findByCpf(cpf);
     }
 
 
