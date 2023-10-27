@@ -1,7 +1,9 @@
 package com.efc.pousada_albergo.domain;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import org.hibernate.validator.constraints.br.CPF;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -23,6 +25,7 @@ public class Usuario {
     private String nome;
 
     @Getter
+    @Email
     @NotBlank(message = "E-mail é obrigatório")
     @Column(nullable = false, length = 80)
     private String email;
@@ -43,7 +46,9 @@ public class Usuario {
     @Column(nullable = false, length = 200)
     private String senha;
 
+    @Getter
     @DateTimeFormat(pattern = "dd/MM/yyyy")
+    @NotNull(message = "Data de nascimento é obrigatória")
     @Column(nullable = false)
     private Date dataNascimento;
 
