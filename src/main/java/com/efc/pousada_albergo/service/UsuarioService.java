@@ -13,6 +13,8 @@ import java.util.Optional;
 @Service
 public class UsuarioService {
 
+    //TODO: EMAIL UNIQUE
+
     private final UsuarioRepository usuarioRepository;
 
     @Autowired
