@@ -34,11 +34,18 @@ public class UsuarioService {
     {
         this.validarUsuario(usuario);
 
-        Optional<Usuario> usuarioOptional = buscaPorCPF(usuario.getCpf());
-        if (usuarioOptional.isPresent())
+        Optional<Usuario> usuarioCpfOptional = buscaPorCPF(usuario.getCpf());
+        Optional<Usuario> usuarioEmailOptional = buscaPorEmail(usuario.getEmail());
+
+        if (usuarioCpfOptional.isPresent())
         {
             throw new HttpClientErrorException(HttpStatus.CONFLICT,
-                    "Usuário com CPF: " + usuario.getCpf() + " já existente");
+                    "Usuário com CPF: " + usuario.getCpf() + " já cadastrado");
+        }
+        if (usuarioEmailOptional.isPresent())
+        {
+            throw new HttpClientErrorException(HttpStatus.CONFLICT,
+                    "Email: " + usuario.getEmail() + " já cadastrado");
         }
 
         return usuarioRepository.save(usuario);
@@ -68,6 +75,11 @@ public class UsuarioService {
     private Optional<Usuario> buscaPorCPF(String cpf)
     {
         return usuarioRepository.findByCpf(cpf);
+    }
+
+    private Optional<Usuario> buscaPorEmail(String email)
+    {
+        return usuarioRepository.findByEmail(email);
     }
 
 
