@@ -7,6 +7,8 @@ import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.Errors;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -33,7 +35,8 @@ public class UsuarioController {
         }
         catch (HttpClientErrorException clientException)
         {
-            return ResponseEntity.status(clientException.getStatusCode()).body(clientException.getMessage());
+            return ResponseEntity.status(clientException.getStatusCode())
+                    .body("Usuário com id: " + id.toString() + " não encontrado");
         }
         catch (Exception exception)
         {
@@ -42,8 +45,12 @@ public class UsuarioController {
     }
 
     @PostMapping
-    public ResponseEntity<String> salvar(@Valid @RequestBody Usuario usuario)
+    public ResponseEntity<String> salvar(@Valid @RequestBody Usuario usuario, Errors errors)
     {
+        if (errors.hasErrors())
+        {
+            return ResponseEntity.badRequest().body(errors.getFieldErrors().get(0).getDefaultMessage());
+        }
         try
         {
             Usuario obj = service.salvar(usuario);
@@ -52,12 +59,11 @@ public class UsuarioController {
         }
         catch (HttpClientErrorException clientException)
         {
-            //TODO: Testar chamada igual da buscaPorId
-            return new ResponseEntity<>(clientException.getMessage(), clientException.getStatusCode());
+            return ResponseEntity.status(clientException.getStatusCode()).body(clientException.getMessage());
         }
         catch (Exception exception)
         {
-            return new ResponseEntity<>(exception.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+            return ResponseEntity.internalServerError().body(exception.getMessage());
         }
 
     }
