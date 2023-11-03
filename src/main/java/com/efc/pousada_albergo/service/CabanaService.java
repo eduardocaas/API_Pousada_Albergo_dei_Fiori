@@ -12,6 +12,8 @@ import org.springframework.stereotype.Service;
 @Component
 public class CabanaService {
 
+    //TODO: Implementar persistência, depois jogar num método separado -> será chamado com URL, e número da cabana
+
     HttpConnector connector = new HttpConnector();
 
     @Scheduled(cron = "0 * * * * *")
