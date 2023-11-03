@@ -28,8 +28,60 @@ public class CabanaService {
                 String summary = event.getSummary().getValue();
                 Date startDate = event.getStartDate().getDate();
                 Date endDate = event.getEndDate().getDate();
-                System.out.println(startDate);
-                System.out.println(endDate);
+            }
+        }
+    }
+
+    @Scheduled(cron = "0 * * * * *")
+    private void atualizaCabana2()
+    {
+        String icsUrl = "https://ical.booking.com/v1/export?t=642c91f5-2659-4965-a8ac-0990d98baa47";
+        Calendar calendar = connector.getCalendar(icsUrl);
+
+        ComponentList components = calendar.getComponents();
+
+        for (Object obj : components) {
+            if (obj instanceof VEvent) {
+                VEvent event = (VEvent) obj;
+                String summary = event.getSummary().getValue();
+                Date startDate = event.getStartDate().getDate();
+                Date endDate = event.getEndDate().getDate();
+            }
+        }
+    }
+
+    @Scheduled(cron = "0 * * * * *")
+    private void atualizaCabana3()
+    {
+        String icsUrl = "https://ical.booking.com/v1/export?t=df888a62-5a48-4be8-8330-9d2ba3accf9c";
+        Calendar calendar = connector.getCalendar(icsUrl);
+
+        ComponentList components = calendar.getComponents();
+
+        for (Object obj : components) {
+            if (obj instanceof VEvent) {
+                VEvent event = (VEvent) obj;
+                String summary = event.getSummary().getValue();
+                Date startDate = event.getStartDate().getDate();
+                Date endDate = event.getEndDate().getDate();
+            }
+        }
+    }
+
+    @Scheduled(cron = "0 * * * * *")
+    private void atualizaCabana4()
+    {
+        String icsUrl = "https://ical.booking.com/v1/export?t=4effcd71-229d-4097-8755-e28538c834b9";
+        Calendar calendar = connector.getCalendar(icsUrl);
+
+        ComponentList components = calendar.getComponents();
+
+        for (Object obj : components) {
+            if (obj instanceof VEvent) {
+                VEvent event = (VEvent) obj;
+                String summary = event.getSummary().getValue();
+                Date startDate = event.getStartDate().getDate();
+                Date endDate = event.getEndDate().getDate();
             }
         }
     }
