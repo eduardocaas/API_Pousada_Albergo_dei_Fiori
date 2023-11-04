@@ -26,6 +26,7 @@ public class UsuarioController {
     }
 
     @GetMapping(value = "/{id}")
+    @CrossOrigin(origins = "*")
     public ResponseEntity<String> buscaPorId(@PathVariable Long id)
     {
         try
@@ -45,6 +46,7 @@ public class UsuarioController {
     }
 
     @PostMapping
+    @CrossOrigin(origins = "*")
     public ResponseEntity<String> salvar(@Valid @RequestBody Usuario usuario, Errors errors)
     {
         if (errors.hasErrors())
