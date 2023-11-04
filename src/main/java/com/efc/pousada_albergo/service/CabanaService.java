@@ -1,6 +1,7 @@
 package com.efc.pousada_albergo.service;
 
 import com.efc.pousada_albergo.http.HttpConnector;
+import com.efc.pousada_albergo.repository.CabanaRepository;
 import net.fortuna.ical4j.model.Calendar;
 import net.fortuna.ical4j.model.ComponentList;
 import net.fortuna.ical4j.model.Date;
@@ -13,6 +14,8 @@ import org.springframework.stereotype.Service;
 public class CabanaService {
 
     //TODO: Implementar persistência, depois jogar num método separado -> será chamado com URL, e número da cabana
+
+    CabanaRepository cabanaRepository;
 
     HttpConnector connector = new HttpConnector();
 
@@ -28,8 +31,22 @@ public class CabanaService {
             if (obj instanceof VEvent) {
                 VEvent event = (VEvent) obj;
                 String summary = event.getSummary().getValue();
-                Date startDate = event.getStartDate().getDate();
-                Date endDate = event.getEndDate().getDate();
+                String startDate = event.getStartDate().getDate().toString();
+                // Date - SQL - Year, Month, Day
+                // Formato: 20231228
+                // Substring: (0, 4) (4, 6) (6, 8) - testar com print
+                java.sql.Date startDateSQL = new java.sql.Date(
+                        Integer.getInteger(startDate.substring(0, 4)),
+                        Integer.getInteger(startDate.substring(4, 6)),
+                        Integer.getInteger(startDate.substring(6, 8)));
+
+                String endDate = event.getEndDate().getDate().toString();
+                java.sql.Date endDateSQL = new java.sql.Date(
+                        Integer.getInteger(startDate.substring(0, 4)),
+                        Integer.getInteger(startDate.substring(4, 6)),
+                        Integer.getInteger(startDate.substring(6, 8)));
+
+                System.out.println(startDate);
             }
         }
     }
