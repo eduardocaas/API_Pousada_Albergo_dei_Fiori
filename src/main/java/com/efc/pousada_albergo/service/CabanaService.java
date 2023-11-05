@@ -6,22 +6,32 @@ import net.fortuna.ical4j.model.Calendar;
 import net.fortuna.ical4j.model.ComponentList;
 import net.fortuna.ical4j.model.Date;
 import net.fortuna.ical4j.model.component.VEvent;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 
 @Component
 public class CabanaService {
 
     //TODO: Implementar persistência, depois jogar num método separado -> será chamado com URL, e número da cabana
 
-    CabanaRepository cabanaRepository;
+    private final CabanaRepository cabanaRepository;
+
+
+    @Autowired
+    public CabanaService(CabanaRepository cabanaRepository) {
+        this.cabanaRepository = cabanaRepository;
+    }
 
     HttpConnector connector = new HttpConnector();
 
+    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");
+
     @Scheduled(cron = "0 * * * * *")
-    private void atualizaCabana1()
-    {
+    private void atualizaCabana1() throws ParseException {
         String icsUrl = "https://ical.booking.com/v1/export?t=004ab151-4832-475c-bb13-f9c73f5bb251";
         Calendar calendar = connector.getCalendar(icsUrl);
 
@@ -32,21 +42,14 @@ public class CabanaService {
                 VEvent event = (VEvent) obj;
                 String summary = event.getSummary().getValue();
                 String startDate = event.getStartDate().getDate().toString();
-                // Date - SQL - Year, Month, Day
-                // Formato: 20231228
-                // Substring: (0, 4) (4, 6) (6, 8) - testar com print
-                java.sql.Date startDateSQL = new java.sql.Date(
-                        Integer.getInteger(startDate.substring(0, 4)),
-                        Integer.getInteger(startDate.substring(4, 6)),
-                        Integer.getInteger(startDate.substring(6, 8)));
 
+                java.util.Date parsedStartDate = dateFormat.parse(startDate);
+                java.sql.Date startDateSQL = new java.sql.Date(parsedStartDate.getTime());
                 String endDate = event.getEndDate().getDate().toString();
-                java.sql.Date endDateSQL = new java.sql.Date(
-                        Integer.getInteger(startDate.substring(0, 4)),
-                        Integer.getInteger(startDate.substring(4, 6)),
-                        Integer.getInteger(startDate.substring(6, 8)));
+                java.util.Date parsedEndDate = dateFormat.parse(endDate);
+                java.sql.Date endDateSQL = new java.sql.Date(parsedEndDate.getTime());
 
-                System.out.println(startDate);
+                cabanaRepository.atualizaDataCabana(1, startDateSQL, endDateSQL);
             }
         }
     }
