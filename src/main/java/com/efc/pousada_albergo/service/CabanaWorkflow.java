@@ -4,7 +4,6 @@ import com.efc.pousada_albergo.http.HttpConnector;
 import com.efc.pousada_albergo.repository.CabanaRepository;
 import net.fortuna.ical4j.model.Calendar;
 import net.fortuna.ical4j.model.ComponentList;
-import net.fortuna.ical4j.model.Date;
 import net.fortuna.ical4j.model.component.VEvent;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -12,19 +11,15 @@ import org.springframework.stereotype.Component;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.List;
 
 @Component
-public class CabanaService {
-
-    //TODO: Implementar persistência, depois jogar num método separado -> será chamado com URL, e número da cabana
+public class CabanaWorkflow {
 
     private final CabanaRepository cabanaRepository;
 
 
     @Autowired
-    public CabanaService(CabanaRepository cabanaRepository) {
+    public CabanaWorkflow(CabanaRepository cabanaRepository) {
         this.cabanaRepository = cabanaRepository;
     }
 
@@ -56,8 +51,8 @@ public class CabanaService {
         }
     }
 
-    @Scheduled(cron = "0 * * * * *")
-    private void atualizaCabana1() throws ParseException {
+    @Scheduled(cron = "0 */20 * * * *")
+    private void atualizaCabana() throws ParseException {
         String arrIcsUrl[];
         arrIcsUrl = new String[4];
         arrIcsUrl[0] = "https://ical.booking.com/v1/export?t=004ab151-4832-475c-bb13-f9c73f5bb251";
