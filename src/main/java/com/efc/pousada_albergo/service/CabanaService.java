@@ -24,6 +24,7 @@ public class CabanaService {
     public String buscaDataCabana(Integer cab, Integer mod)
     {
         List<Date> datas = new ArrayList<>();
+
         if (cab == 1)
         {
             datas = repository.buscaDataCabana1();
@@ -39,6 +40,10 @@ public class CabanaService {
         else if (cab == 4)
         {
             datas = repository.buscaDataCabana4();
+        }
+        else
+        {
+            throw new HttpClientErrorException(HttpStatus.BAD_REQUEST, "Informe uma cabana válida (1, 2, 3 ou 4)");
         }
 
         if (mod == 1)
