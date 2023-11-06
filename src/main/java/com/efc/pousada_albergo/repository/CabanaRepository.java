@@ -15,16 +15,16 @@ public interface CabanaRepository extends JpaRepository<Usuario, Integer> {
     @Query(value = "CALL sp_atualizaData(:cab, :di, :df)", nativeQuery = true)
     int atualizaDataCabana(@Param("cab") Integer cabana_num, @Param("di") Date dataInicio, @Param("df") Date dataFim);
 
-    @Query(value = "SELECT data FROM cabana_1", nativeQuery = true)
+    @Query(value = "SELECT data FROM cabana_1 WHERE status = true", nativeQuery = true)
     List<Date> buscaDataCabana1();
 
-    @Query(value = "SELECT data FROM cabana_2", nativeQuery = true)
+    @Query(value = "SELECT data FROM cabana_2 WHERE status = true", nativeQuery = true)
     List<Date> buscaDataCabana2();
 
-    @Query(value = "SELECT data FROM cabana_3", nativeQuery = true)
+    @Query(value = "SELECT data FROM cabana_3 WHERE status = true", nativeQuery = true)
     List<Date> buscaDataCabana3();
 
-    @Query(value = "SELECT data FROM cabana_4", nativeQuery = true)
+    @Query(value = "SELECT data FROM cabana_4 WHERE status = true", nativeQuery = true)
     List<Date> buscaDataCabana4();
 
 }
