@@ -48,19 +48,35 @@ public class CabanaService {
 
         if (mod == 1)
         {
-            return datas.stream().map(x -> ("'" + x.toString() + "'") ).toList().toString();
+            String datasRef = datas.stream().map(x -> ("'" + x.toString() + "'") ).toList().toString();
+            return datasRef.replace("[", "").replace("]", "");
         }
         else if (mod == 2)
         {
-            return datas.stream().map(x -> x.toString().replace("-", "")).toList().toString();
+            String datasRef = datas.stream().map(Date::toString).toList().toString();
+            return datasRef.replace("[", "").replace("]", "");
         }
         else if (mod == 3)
         {
+            return datas.stream().map(x -> x.toString().replace("-", "")).toList().toString();
+        }
+        else if (mod == 4)
+        {
+            String datasRef = datas.stream().map(x -> x.toString().replace("-", "")).toList().toString();
+            return datasRef.replace("[", "").replace("]", "");
+
+        }
+        else if (mod == 5)
+        {
             return datas.toString();
+        }
+        else if (mod == 6)
+        {
+            return datas.toString().replace("[", "").replace("]", "");
         }
         else
         {
-            throw new HttpClientErrorException(HttpStatus.BAD_REQUEST, "Informe um modelo de data válido (1, 2 ou 3)");
+            throw new HttpClientErrorException(HttpStatus.BAD_REQUEST, "Informe um modelo de data válido (1, 2, 3, 4, 5 ou 6)");
         }
     }
 
